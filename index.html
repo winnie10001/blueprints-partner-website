@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CSP will be added at server level (Vercel headers) after deployment -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <title>Blueprints Partner | Strategy. Brand. Launch. Growth.</title>
+  <meta name="description" content="Strategy, brand, and execution for founders. From idea to launch.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ground: '#111520',
+            surface: '#1A1F2E',
+            elevated: '#232839',
+            border: '#2E3448',
+            vapor: '#A0A8BE',
+            cloud: '#E4E8F2',
+            accent: '#6B93D6',
+            'accent-glow': '#85ABE3',
+          },
+          fontFamily: {
+            hero: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            display: ['"DM Serif Display"', 'Georgia', 'serif'],
+            body: ['"Outfit"', 'system-ui', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: #111520; color: #A0A8BE; font-family: 'Outfit', system-ui, sans-serif; }
+    body::after {
+      content: ''; position: fixed; inset: 0; pointer-events: none; opacity: 0.025; z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .service-card { transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease; }
+    .service-card:hover { transform: translateY(-5px); border-color: #6B93D6; box-shadow: 0 16px 48px rgba(74,111,165,0.1); }
+    .cta-btn { transition: all 0.3s ease; }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(74,111,165,0.25); }
+    .btn-outline { transition: all 0.3s ease; }
+    .btn-outline:hover { background: rgba(74,111,165,0.12); border-color: #6B93D6; color: #E4E8F2; }
+    .accent-line { width: 48px; height: 2px; background: #6B93D6; }
+    .form-input:focus { outline: none; border-color: #6B93D6; box-shadow: 0 0 0 3px rgba(74,111,165,0.15); }
+
+    /* Background paths */
+    #bg-paths-container {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    }
+    #bg-paths-container svg {
+      width: 100%; height: 100%;
+    }
+    #bg-paths-container path {
+      stroke: currentColor;
+      fill: none;
+      stroke-dasharray: 0.3 0.7;
+      stroke-dashoffset: 0;
+    }
+    @keyframes path-flow-a {
+      0% { stroke-dashoffset: 0; opacity: 0.15; }
+      33% { opacity: 0.45; }
+      66% { opacity: 0.2; }
+      100% { stroke-dashoffset: -1; opacity: 0.15; }
+    }
+    @keyframes path-flow-b {
+      0% { stroke-dashoffset: 0; opacity: 0.1; }
+      33% { opacity: 0.35; }
+      66% { opacity: 0.15; }
+      100% { stroke-dashoffset: 1; opacity: 0.1; }
+    }
+
+    /* Logo carousel */
+    .logo-track {
+      display: flex; gap: 4rem; animation: scroll-logos 30s linear infinite;
+    }
+    .logo-track:hover { animation-play-state: paused; }
+    @keyframes scroll-logos {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .logo-mask {
+      mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+    }
+    .logo-item {
+      flex-shrink: 0; display: flex; align-items: center; gap: 0.5rem;
+      color: rgba(160,168,190,0.35); font-family: 'Outfit', sans-serif; font-weight: 500;
+      font-size: 1.1rem; letter-spacing: 0.02em; transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+    .logo-item:hover { color: rgba(160,168,190,0.7); }
+    .logo-item svg { width: 24px; height: 24px; opacity: 0.5; }
+
+    .icon-box { transition: all 0.3s ease; }
+    .icon-box:hover { background: rgba(74,111,165,0.15); transform: scale(1.05); }
+    .step-connector { position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, #252A3A, #252A3A, transparent); z-index: 0; }
+    .stat-card { transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .stat-card:hover { border-color: #6B93D6; transform: translateY(-2px); }
+    .stat-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(74,111,165,0.05), transparent 60%); opacity: 0; transition: opacity 0.3s ease; }
+    .stat-card:hover::before { opacity: 1; }
+
+    /* Loading spinner */
+    .spinner { display: none; }
+    .form-loading .spinner { display: inline-block; }
+    .form-loading .btn-text { display: none; }
+
+    /* Cal embed container */
+    #cal-embed { min-height: 500px; border-radius: 12px; overflow: hidden; }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- NAV -->
+  <nav class="fixed top-0 w-full z-50 backdrop-blur-md bg-ground/85 border-b border-border/60">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3">
+        <img src="assets/logo.png" alt="Blueprints Partner" class="h-10 w-auto rounded-md bg-white/90 p-1">
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#services" class="text-vapor/70 hover:text-cloud text-sm font-light tracking-wide transition-colors">Services</a>
+        <a href="#about" class="text-vapor/70 hover:text-cloud text-sm font-light tracking-wide transition-colors">About</a>
+        <a href="#contact" class="text-vapor/70 hover:text-cloud text-sm font-light tracking-wide transition-colors">Contact</a>
+        <a href="#contact" class="cta-btn bg-accent text-white text-sm font-medium px-5 py-2.5 rounded-lg">Book a Free Call</a>
+      </div>
+      <button id="mobile-menu-btn" class="md:hidden text-vapor">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-border/50 px-6 py-4 space-y-3 bg-ground">
+      <a href="#services" class="block text-vapor/70 text-sm">Services</a>
+      <a href="#about" class="block text-vapor/70 text-sm">About</a>
+      <a href="#contact" class="block text-vapor/70 text-sm">Contact</a>
+      <a href="#contact" class="block cta-btn bg-accent text-white text-sm font-medium px-5 py-2.5 rounded-lg text-center">Book a Free Call</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
+    <!-- Background paths SVG -->
+    <div id="bg-paths-container" class="text-cloud/80"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto px-4 md:px-6 text-center">
+      <h1 class="font-body text-cloud mb-8 font-bold uppercase tracking-tighter" style="font-size: clamp(2.5rem, 9vw, 7rem); line-height: 1.05;">
+        BLUEPRINTS PARTNER
+      </h1>
+      <p class="font-body text-pretty max-w-2xl mx-auto mb-10" style="font-size: clamp(0.9rem, 1.8vw, 1.15rem); font-weight: 400; color: rgba(160,168,190,0.6);">
+        Strategy, brand, and execution for founders. From idea to launch.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="#contact" class="group inline-block relative bg-gradient-to-b from-white/10 to-black/10 p-px rounded-2xl backdrop-blur-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <span class="flex items-center gap-3 rounded-[1.15rem] px-8 py-4 text-base font-semibold backdrop-blur-md bg-ground/95 hover:bg-ground/100 text-cloud transition-all duration-300 group-hover:-translate-y-0.5 border border-white/10 hover:shadow-md">
+            <span class="opacity-90 group-hover:opacity-100 transition-opacity">Book Your Free Intro Call</span>
+            <span class="opacity-70 group-hover:opacity-100 group-hover:translate-x-1.5 transition-all duration-300">&rarr;</span>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <div class="absolute bottom-10 left-1/2 flex flex-col items-center gap-2 z-10" style="transform: translateX(-50%);">
+      <div class="w-px h-12" style="background: linear-gradient(to bottom, transparent, rgba(160,168,190,0.15));"></div>
+      <span class="uppercase" style="color: rgba(160,168,190,0.2); letter-spacing: 0.2em; font-size: 0.65rem;">Scroll</span>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="py-24 md:py-32 px-6 relative">
+    <div class="max-w-6xl mx-auto">
+      <div class="fade-up mb-16 md:mb-20 max-w-xl">
+        <div class="accent-line mb-6"></div>
+        <h2 class="font-display text-3xl md:text-4xl text-cloud mb-4">What We Offer</h2>
+        <p class="text-vapor/60 font-light leading-relaxed">Every engagement starts with a free intro call. From there, pick the level of support that fits.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- Clarity -->
+        <div class="fade-up service-card bg-surface border border-border rounded-2xl p-8 md:p-10 group">
+          <div class="flex items-start justify-between mb-5">
+            <div class="icon-box w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            </div>
+            <span class="text-cloud font-display text-2xl">&euro;150</span>
+          </div>
+          <span class="text-accent text-xs font-medium tracking-[0.2em] uppercase">Single Session</span>
+          <h3 class="font-display text-2xl text-cloud mt-1 mb-4">Blueprint Clarity</h3>
+          <p class="text-vapor/55 font-light mb-6 leading-relaxed text-sm">A focused 60-minute strategy session for founders stuck on one specific challenge.</p>
+          <div class="space-y-3 mb-8">
+            <div class="flex items-start gap-3"><svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-vapor/70 text-sm font-light">60-minute strategy call</span></div>
+            <div class="flex items-start gap-3"><svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-vapor/70 text-sm font-light">Clarity Brief PDF within 48 hours</span></div>
+            <div class="flex items-start gap-3"><svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-vapor/70 text-sm font-light">Problem diagnosed + 3 concrete next steps</span></div>
+          </div>
+          <a href="#contact" class="inline-flex items-center gap-2 text-accent hover:text-accent-glow text-sm font-medium transition-colors" onclick="document.getElementById('service-select').value='clarity'">
+            Get started <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+        </div>
+        <!-- Build -->
+        <div class="fade-up service-card bg-surface border border-border rounded-2xl p-8 md:p-10 group" style="transition-delay:0.1s">
+          <div class="flex items-start justify-between mb-5">
+            <div class="icon-box w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            </div>
+            <span class="text-cloud font-display text-2xl">&euro;1,000</span>
+          </div>
+          <span class="text-accent text-xs font-medium tracking-[0.2em] uppercase">2 Weeks</span>
+          <h3 class="font-display text-2xl text-cloud mt-1 mb-4">Blueprint Build</h3>
+          <p class="text-vapor/55 font-light mb-6 leading-relaxed text-sm">A hands-on sprint to build your brand's strategic foundation. You walk away with real documents.</p>
+          <div class="space-y-3 mb-8">
+            <div class="flex items-start gap-3"><svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-vapor/70 text-sm font-light">3 strategy calls (kick-off, mid-point, final)</span></div>
+            <div class="flex items-start gap-3"><svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-vapor/70 text-sm font-light">Brand Strategy Document</span></div>
+            <div class="flex items-start gap-3"><svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-vapor/70 text-sm font-light">Go-To-Market Playbook</span></div>
+          </div>
+          <a href="#contact" class="inline-flex items-center gap-2 text-accent hover:text-accent-glow text-sm font-medium transition-colors" onclick="document.getElementById('service-select').value='build'">
+            Get started <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+        </div>
+        <!-- Launch (featured) -->
+        <div class="fade-up service-card bg-surface border-2 border-accent/30 rounded-2xl p-8 md:p-10 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 bg-accent text-white text-[10px] font-semibold tracking-[0.15em] uppercase px-4 py-1.5 rounded-bl-xl">Most Popular</div>
+          <div class="absolute inset-0 bg-gradient-to-br from-accent/[0.03] to-transparent pointer-events-none"></div>
+          <div class="relative">
+            <div class="flex items-start justify-between mb-5">
+              <div class="icon-box w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <span class="text-cloud font-display text-2xl">&euro;2,500</span>
+            </div>
+            <span class="text-accent text-xs font-medium tracking-[0.2em] uppercase">6 Weeks</span>
+            <h3 class="font-display text-2xl text-cloud mt-1 mb-4">Blueprint Launch</h3>
+            <p class="text-vapor/55 font-light mb-6 leading-relaxed text-sm">The full engagement. Strategy, setup, and guided execution. Everything you need to launch.</p>
+            <div class="space-y-3 mb-8">
+              <div class="flex items-start gap-3"><svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-vapor/70 text-sm font-light">8 calls (kick-off + 6 weekly + final review)</span></div>
+              <div class="flex items-start gap-3"><svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-vapor/70 text-sm font-light">Brand Strategy + Go-To-Market Playbook</span></div>
+              <div class="flex items-start gap-3"><svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-vapor/70 text-sm font-light">Full operational setup</span></div>
+              <div class="flex items-start gap-3"><svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-vapor/70 text-sm font-light">Launch Playbook + Final Review</span></div>
+            </div>
+            <a href="#contact" class="inline-flex items-center gap-2 text-accent hover:text-accent-glow text-sm font-medium transition-colors" onclick="document.getElementById('service-select').value='launch'">
+              Get started <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+          </div>
+        </div>
+        <!-- Custom -->
+        <div class="fade-up service-card bg-surface border border-border rounded-2xl p-8 md:p-10 group" style="transition-delay:0.1s">
+          <div class="flex items-start justify-between mb-5">
+            <div class="icon-box w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </div>
+            <span class="text-vapor/50 font-display text-lg italic">On request</span>
+          </div>
+          <span class="text-accent text-xs font-medium tracking-[0.2em] uppercase">Flexible</span>
+          <h3 class="font-display text-2xl text-cloud mt-1 mb-4">Blueprint Custom</h3>
+          <p class="text-vapor/55 font-light mb-6 leading-relaxed text-sm">Bespoke projects scoped to your needs. We define exactly what you get before we start.</p>
+          <div class="space-y-3 mb-8">
+            <div class="flex items-start gap-3"><svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-vapor/70 text-sm font-light">Website builds</span></div>
+            <div class="flex items-start gap-3"><svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-vapor/70 text-sm font-light">Full brand identity</span></div>
+            <div class="flex items-start gap-3"><svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-vapor/70 text-sm font-light">Pitch decks and investor materials</span></div>
+          </div>
+          <a href="#contact" class="inline-flex items-center gap-2 text-accent hover:text-accent-glow text-sm font-medium transition-colors" onclick="document.getElementById('service-select').value='custom'">
+            Get started <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE BREAK -->
+  <section class="py-20 md:py-28 px-6 border-t border-b border-border/40">
+    <div class="max-w-3xl mx-auto text-center">
+      <p class="font-display text-cloud/80 text-2xl md:text-4xl italic leading-relaxed">
+        "We don't hand you a PDF and disappear. We stay in the process until things are actually working."
+      </p>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="py-24 md:py-32 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-16 md:gap-20 items-start">
+        <div class="fade-up">
+          <div class="accent-line mb-6"></div>
+          <h2 class="font-display text-3xl md:text-4xl text-cloud mb-6">Who We Are</h2>
+          <div class="space-y-4 text-vapor/60 font-light leading-relaxed">
+            <p>Blueprints Partner helps entrepreneurs and founders turn ideas into real, operating businesses.</p>
+            <p>Most consultants give you advice. We build alongside you. Every engagement is built around your business, your challenges, and your goals.</p>
+          </div>
+        </div>
+        <div class="fade-up grid grid-cols-2 gap-5" style="transition-delay:0.15s">
+          <div class="stat-card bg-surface border border-border rounded-xl p-6">
+            <div class="font-display text-3xl text-cloud mb-1">13</div>
+            <div class="text-vapor/45 text-sm font-light">Countries reached</div>
+          </div>
+          <div class="stat-card bg-surface border border-border rounded-xl p-6">
+            <div class="font-display text-3xl text-cloud mb-1">6+</div>
+            <div class="text-vapor/45 text-sm font-light">Years building brands</div>
+          </div>
+          <div class="stat-card bg-surface border border-border rounded-xl p-6">
+            <div class="font-display text-3xl text-accent mb-1">Free</div>
+            <div class="text-vapor/45 text-sm font-light">Intro call, always</div>
+          </div>
+          <div class="stat-card bg-surface border border-border rounded-xl p-6">
+            <div class="font-display text-3xl text-cloud mb-1">48h</div>
+            <div class="text-vapor/45 text-sm font-light">Deliverable turnaround</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="py-24 md:py-32 px-6 border-t border-border/40">
+    <div class="max-w-4xl mx-auto">
+      <div class="fade-up text-center mb-16">
+        <div class="accent-line mx-auto mb-6"></div>
+        <h2 class="font-display text-3xl md:text-4xl text-cloud mb-4">How It Works</h2>
+        <p class="text-vapor/55 font-light">Three steps. No surprises.</p>
+      </div>
+      <div class="relative">
+        <div class="step-connector hidden md:block"></div>
+        <div class="grid md:grid-cols-3 gap-8 relative z-10">
+          <div class="fade-up text-center">
+            <div class="icon-box w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center mx-auto mb-5">
+              <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+            </div>
+            <h3 class="font-display text-lg text-cloud mb-2">Tell Us About You</h3>
+            <p class="text-vapor/45 text-sm font-light leading-relaxed">Fill in the form below so we understand your business before the call.</p>
+          </div>
+          <div class="fade-up text-center" style="transition-delay:0.1s">
+            <div class="icon-box w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center mx-auto mb-5">
+              <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            </div>
+            <h3 class="font-display text-lg text-cloud mb-2">Free Intro Call</h3>
+            <p class="text-vapor/45 text-sm font-light leading-relaxed">15 minutes. We listen, assess fit, and recommend the right next step.</p>
+          </div>
+          <div class="fade-up text-center" style="transition-delay:0.2s">
+            <div class="icon-box w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center mx-auto mb-5">
+              <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <h3 class="font-display text-lg text-cloud mb-2">Get Your Blueprint</h3>
+            <p class="text-vapor/45 text-sm font-light leading-relaxed">We deliver clear, actionable strategy you can execute.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGO CAROUSEL -->
+  <section class="py-16 md:py-20 border-t border-border/40 overflow-hidden">
+    <div class="max-w-6xl mx-auto px-6 mb-10">
+      <p class="text-center text-vapor/35 text-sm font-light tracking-[0.15em] uppercase">Powered by</p>
+    </div>
+    <div class="logo-mask">
+      <div class="logo-track">
+        <!-- First set -->
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>Google</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5zm4.5 14H7v-7h2.5v7zm-1.25-8c-.83 0-1.5-.67-1.5-1.5S7.42 6 8.25 6s1.5.67 1.5 1.5S9.08 9 8.25 9zM17 17h-2.5v-3.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5V17H9v-7h2.5v1c.47-.8 1.33-1.25 2.25-1.25 1.52 0 2.75 1.23 2.75 2.75V17z"/></svg>LinkedIn</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.332 8.668a3.333 3.333 0 0 0-6.665 0v6.665a3.333 3.333 0 0 0 6.665 0V8.668zm-3.333 8.332a1.667 1.667 0 0 1-1.667-1.667V8.668a1.667 1.667 0 1 1 3.334 0v6.665A1.667 1.667 0 0 1 12 17zM4 12a1 1 0 0 0-1 1v2.333a9.002 9.002 0 0 0 18 0V13a1 1 0 1 0-2 0v2.333a7.002 7.002 0 0 1-14 0V13a1 1 0 0 0-1-1z"/></svg>Notion</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12z"/></svg>Meta</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.11.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>GitHub</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zm0 1.271a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zm-1.27 0a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.163 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.163 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.163 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zm0-1.27a2.527 2.527 0 0 1-2.52-2.523 2.527 2.527 0 0 1 2.52-2.52h6.315A2.528 2.528 0 0 1 24 15.163a2.528 2.528 0 0 1-2.522 2.523h-6.315z"/></svg>Slack</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.5 4.25l7.5-3.5 7.5 3.5v15.5l-7.5 3.5-7.5-3.5V4.25zM13 8.5L8 10.75v4.5L13 17.5l5-2.25v-4.5L13 8.5z"/></svg>Figma</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Vercel</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z"/></svg>Stripe</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0-2a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2v-2zm0-8h2v6h-2V7z"/></svg>Cal.com</div>
+        <!-- Duplicate set for seamless loop -->
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>Google</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5zm4.5 14H7v-7h2.5v7zm-1.25-8c-.83 0-1.5-.67-1.5-1.5S7.42 6 8.25 6s1.5.67 1.5 1.5S9.08 9 8.25 9zM17 17h-2.5v-3.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5V17H9v-7h2.5v1c.47-.8 1.33-1.25 2.25-1.25 1.52 0 2.75 1.23 2.75 2.75V17z"/></svg>LinkedIn</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.332 8.668a3.333 3.333 0 0 0-6.665 0v6.665a3.333 3.333 0 0 0 6.665 0V8.668zm-3.333 8.332a1.667 1.667 0 0 1-1.667-1.667V8.668a1.667 1.667 0 1 1 3.334 0v6.665A1.667 1.667 0 0 1 12 17zM4 12a1 1 0 0 0-1 1v2.333a9.002 9.002 0 0 0 18 0V13a1 1 0 1 0-2 0v2.333a7.002 7.002 0 0 1-14 0V13a1 1 0 0 0-1-1z"/></svg>Notion</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12z"/></svg>Meta</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.11.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>GitHub</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zm0 1.271a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zm-1.27 0a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.163 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.163 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.163 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zm0-1.27a2.527 2.527 0 0 1-2.52-2.523 2.527 2.527 0 0 1 2.52-2.52h6.315A2.528 2.528 0 0 1 24 15.163a2.528 2.528 0 0 1-2.522 2.523h-6.315z"/></svg>Slack</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.5 4.25l7.5-3.5 7.5 3.5v15.5l-7.5 3.5-7.5-3.5V4.25zM13 8.5L8 10.75v4.5L13 17.5l5-2.25v-4.5L13 8.5z"/></svg>Figma</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Vercel</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z"/></svg>Stripe</div>
+        <div class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0-2a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2v-2zm0-8h2v6h-2V7z"/></svg>Cal.com</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOK A CALL -->
+  <section id="contact" class="py-24 md:py-32 px-6 border-t border-border/40">
+    <div class="max-w-2xl mx-auto text-center">
+      <div class="fade-up">
+        <div class="accent-line mx-auto mb-6"></div>
+        <h2 class="font-display text-3xl md:text-4xl text-cloud mb-4">Book Your Free Intro Call</h2>
+        <p class="text-vapor/55 font-light mb-10">15 minutes. We listen, assess fit, and recommend the right next step.</p>
+        <a href="https://cal.com/blueprints-partner/introductory-call" target="_blank" rel="noopener" class="cta-btn bg-accent text-white font-medium px-10 py-4 rounded-lg text-base inline-flex items-center justify-center gap-3">
+          <span>Book Your Free Intro Call</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-border/40 py-10 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <a href="#"><img src="assets/logo.png" alt="Blueprints Partner" class="h-8 w-auto rounded-md bg-white/80 p-0.5"></a>
+      <div class="flex items-center gap-5">
+        <a href="https://www.linkedin.com/company/110830393" target="_blank" rel="noopener" class="text-vapor/60 hover:text-cloud transition-colors" aria-label="LinkedIn">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="mailto:connect.davidbanjo@proton.me" class="text-vapor/60 hover:text-cloud transition-colors" aria-label="Email">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg>
+        </a>
+      </div>
+      <p class="text-vapor/25 text-xs font-light">&copy; 2026 Blueprints Partner</p>
+    </div>
+  </footer>
+
+
+  <script>
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Mobile menu
+    document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+    });
+
+    // Background paths animation
+    (function() {
+      var container = document.getElementById('bg-paths-container');
+      if (!container) return;
+
+      var svgNS = 'http://www.w3.org/2000/svg';
+      var svg = document.createElementNS(svgNS, 'svg');
+      svg.setAttribute('viewBox', '0 0 696 316');
+      svg.setAttribute('fill', 'none');
+      svg.setAttribute('class', 'w-full h-full');
+
+      function addPaths(position, animName) {
+        for (var i = 0; i < 36; i++) {
+          var p = position;
+          var d = 'M' + (-(380 - i * 5 * p)) + ' ' + (-(189 + i * 6)) +
+            'C' + (-(380 - i * 5 * p)) + ' ' + (-(189 + i * 6)) +
+            ' ' + (-(312 - i * 5 * p)) + ' ' + (216 - i * 6) +
+            ' ' + (152 - i * 5 * p) + ' ' + (343 - i * 6) +
+            'C' + (616 - i * 5 * p) + ' ' + (470 - i * 6) +
+            ' ' + (684 - i * 5 * p) + ' ' + (875 - i * 6) +
+            ' ' + (684 - i * 5 * p) + ' ' + (875 - i * 6);
+          var path = document.createElementNS(svgNS, 'path');
+          path.setAttribute('d', d);
+          path.setAttribute('pathLength', '1');
+          path.setAttribute('stroke-width', (0.5 + i * 0.03).toFixed(2));
+          path.setAttribute('stroke-opacity', (0.1 + i * 0.03).toFixed(2));
+          var dur = (20 + Math.random() * 10).toFixed(1);
+          var delay = (Math.random() * -20).toFixed(1);
+          path.style.animation = animName + ' ' + dur + 's linear ' + delay + 's infinite';
+          svg.appendChild(path);
+        }
+      }
+
+      addPaths(1, 'path-flow-a');
+      addPaths(-1, 'path-flow-b');
+      container.appendChild(svg);
+    })();
+
+  </script>
+
+</body>
+</html>
