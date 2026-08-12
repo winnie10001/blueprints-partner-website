@@ -1,8 +1,6 @@
 document.documentElement.classList.add('js');
 
 const header = document.querySelector('[data-header]');
-const menuButton = document.querySelector('[data-menu-button]');
-const mobileNav = document.querySelector('[data-mobile-nav]');
 const previewTabs = [...document.querySelectorAll('[data-preview]')];
 const previewPanels = [...document.querySelectorAll('[data-preview-panel]')];
 const heroObject = document.querySelector('[data-hero-object]');
@@ -10,6 +8,8 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const ambientVideos = [...document.querySelectorAll('[data-ambient-video]')];
 const worldsBelts = [...document.querySelectorAll('[data-worlds-belt]')];
 const enquiryForm = document.querySelector('[data-enquiry-form]');
+const heroVideo = document.querySelector('.hero-film');
+const heroVideoControl = document.querySelector('[data-video-control]');
 
 function updateHeader() {
   header?.classList.toggle('is-scrolled', window.scrollY > 24);
@@ -17,33 +17,6 @@ function updateHeader() {
 
 updateHeader();
 window.addEventListener('scroll', updateHeader, { passive: true });
-
-function setMenu(open) {
-  if (!menuButton || !mobileNav) return;
-
-  menuButton.setAttribute('aria-expanded', String(open));
-  menuButton.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
-  mobileNav.hidden = !open;
-  document.body.classList.toggle('menu-open', open);
-
-  if (open) {
-    mobileNav.querySelector('a')?.focus();
-  }
-}
-
-menuButton?.addEventListener('click', () => {
-  setMenu(menuButton.getAttribute('aria-expanded') !== 'true');
-});
-
-mobileNav?.querySelectorAll('a').forEach((link) => {
-  link.addEventListener('click', () => setMenu(false));
-});
-
-document.addEventListener('keydown', (event) => {
-  if (event.key !== 'Escape' || menuButton?.getAttribute('aria-expanded') !== 'true') return;
-  setMenu(false);
-  menuButton.focus();
-});
 
 function activatePreview(name, moveFocus = false) {
   previewTabs.forEach((tab) => {
@@ -77,6 +50,26 @@ previewTabs.forEach((tab, index) => {
 
 const revealElements = [...document.querySelectorAll('.reveal')];
 
+function updateVideoControl() {
+  if (!heroVideo || !heroVideoControl) return;
+  const paused = heroVideo.paused;
+  heroVideoControl.setAttribute('aria-label', `${paused ? 'Play' : 'Pause'} background film`);
+  heroVideoControl.querySelector('[data-video-control-label]').textContent = `${paused ? 'Play' : 'Pause'} film`;
+}
+
+if (heroVideo && heroVideoControl) {
+  heroVideo.addEventListener('play', updateVideoControl);
+  heroVideo.addEventListener('pause', updateVideoControl);
+  heroVideo.addEventListener('canplay', () => {
+    if (!reducedMotion.matches && heroVideo.paused) heroVideo.play().catch(updateVideoControl);
+  });
+  heroVideoControl.addEventListener('click', () => {
+    if (heroVideo.paused) heroVideo.play().catch(updateVideoControl);
+    else heroVideo.pause();
+  });
+  updateVideoControl();
+}
+
 if ('IntersectionObserver' in window && !reducedMotion.matches) {
   const revealObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
@@ -103,7 +96,7 @@ if (heroObject && !reducedMotion.matches) {
     current.y += (target.y - current.y) * 0.1;
     current.scroll += (target.scroll - current.scroll) * 0.1;
 
-    heroObject.style.transform = `translate3d(${current.x}px, ${current.y + current.scroll}px, 0) scale(1.035)`;
+    heroObject.style.transform = `translate3d(${current.x}px, ${current.y + current.scroll}px, 0) rotateX(${current.y * -0.08}deg) rotateY(${current.x * 0.08}deg)`;
 
     const moving = Math.abs(target.x - current.x) > 0.08
       || Math.abs(target.y - current.y) > 0.08
@@ -172,29 +165,40 @@ if (enquiryForm) {
 
   if (requestedOption) serviceSelect.value = requestedOption.value;
 
-  enquiryForm.addEventListener('submit', (event) => {
+  enquiryForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (!enquiryForm.reportValidity()) return;
 
-    const data = new FormData(enquiryForm);
-    const subject = `Blueprints Partner enquiry: ${data.get('service')}`;
-    const body = [
-      `Name: ${data.get('name')}`,
-      `Email: ${data.get('email')}`,
-      `Service: ${data.get('service')}`,
-      `Timeline: ${data.get('timeline')}`,
-      `Website or social link: ${data.get('link') || 'Not provided'}`,
-      '',
-      'What I am building:',
-      data.get('building'),
-      '',
-      'What feels stuck, unclear or urgent:',
-      data.get('stuck') || 'Not provided',
-    ].join('\n');
-    const mailto = `mailto:info@blueprintspartner.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const button = enquiryForm.querySelector('button[type="submit"]');
+    const status = enquiryForm.querySelector('[data-form-status]');
+    const payload = Object.fromEntries(new FormData(enquiryForm));
+    const endpoint = enquiryForm.dataset.endpoint;
 
-    enquiryForm.dataset.preparedMailto = mailto;
-    enquiryForm.querySelector('[data-form-status]').hidden = false;
-    window.location.href = mailto;
+    button.disabled = true;
+    status.hidden = false;
+    status.dataset.state = '';
+    status.textContent = 'Sending your enquiry...';
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(result.message || 'We could not send your enquiry. Please try again or email us directly.');
+      }
+
+      enquiryForm.reset();
+      status.dataset.state = 'success';
+      status.textContent = 'Thank you. We will contact you within 1–3 business days.';
+    } catch (error) {
+      status.dataset.state = 'error';
+      status.textContent = error.message || 'We could not send your enquiry. Please try again or email us directly.';
+    } finally {
+      button.disabled = false;
+    }
   });
 }

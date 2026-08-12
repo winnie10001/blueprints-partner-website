@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 145 152" role="img" aria-labelledby="title desc">
+  <title id="title">Blueprints Partner symbol</title>
+  <desc id="desc">Two interlocking architectural planes.</desc>
+  <g transform="translate(8 8)">
+    <path fill="#1146D8" d="M0 0h72v33H43v78H0z"/>
+    <path fill="#082B78" d="M43 33h29v78H43z"/>
+    <path fill="#2D67FF" d="M86 25h43v111H57v-33h29z"/>
+    <path fill="#C7CEDA" d="M72 0h14v103H72z"/>
+    <path fill="#E9EDF4" d="M57 111h72v25H57z"/>
+  </g>
+</svg>
