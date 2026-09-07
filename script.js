@@ -10,6 +10,7 @@ const worldsBelts = [...document.querySelectorAll('[data-worlds-belt]')];
 const enquiryForm = document.querySelector('[data-enquiry-form]');
 const heroVideo = document.querySelector('.hero-film');
 const heroVideoControl = document.querySelector('[data-video-control]');
+const stripePaymentLinks = [...document.querySelectorAll('[data-stripe-payment-link]')];
 
 function updateHeader() {
   header?.classList.toggle('is-scrolled', window.scrollY > 24);
@@ -202,3 +203,13 @@ if (enquiryForm) {
     }
   });
 }
+
+stripePaymentLinks.forEach((link) => {
+  const isPlaceholder = link.href.includes('YOUR_PAYMENT_LINK');
+  if (!isPlaceholder) return;
+
+  link.removeAttribute('target');
+  link.removeAttribute('rel');
+  link.href = 'contact.html?service=pay-what-you-want#enquiry-form';
+  link.querySelector('strong').textContent = 'Request payment link →';
+});

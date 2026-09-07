@@ -71,9 +71,9 @@ for (const phrase of [
   'Strategy, branding + execution <em>for founders &amp; creators.</em>',
   'Brand Strategy &amp; Identity',
   'Fractional Chief of Staff',
-  '$1,500',
-  '$599',
-  '$500',
+  'Scoped after enquiry',
+  'Pay what feels right',
+  'data-stripe-payment-link',
   'Custom quote',
   'Inside an Engagement',
 ]) {
@@ -102,8 +102,7 @@ assert.match(pages['services.html'], /Websites &amp; e-commerce/);
 assert.match(pages['services.html'], /Selected AI workflows/);
 assert.ok((pages['services.html'].match(/>Book now </g) || []).length >= 2, 'Each core service needs a Book now action');
 assert.ok((pages['services.html'].match(/Request more information/g) || []).length >= 2, 'Each core service needs an information route');
-assert.match(pages['services.html'], /50% reserves your project start date/);
-assert.match(pages['services.html'], /Paid in full to confirm the pilot/);
+assert.match(pages['services.html'], /The proposal confirms the payment schedule before work begins/);
 assert.match(pages['journal.html'], /Why the brand work starts before the logo/);
 assert.match(pages['journal.html'], /What a two-week Chief of Staff pilot should move/);
 assert.match(pages['about.html'], /Clarity before output/);

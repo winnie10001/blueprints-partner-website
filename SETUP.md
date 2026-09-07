@@ -1,5 +1,20 @@
 # Blueprints Partner Website - Setup Guide
 
+## 0. Stripe pay-what-you-want link
+
+Stripe supports a no-code Payment Link where customers choose the amount they want to pay. Use this for flexible deposits, small thank-you payments or agreed contributions after a conversation.
+
+1. Log in to your Stripe Dashboard.
+2. Go to **Payment Links** and choose **New**.
+3. Select **Customers choose what to pay**.
+4. Add a title such as `Blueprints Partner flexible payment`.
+5. Add a short description explaining what the payment is for.
+6. Optional but recommended: add a suggested amount and a sensible minimum.
+7. Create the link and copy the `https://buy.stripe.com/...` URL.
+8. In `contact.html`, replace `https://buy.stripe.com/YOUR_PAYMENT_LINK` with your real Stripe link.
+
+Until that placeholder is replaced, the website automatically sends people to the enquiry form instead of opening Stripe.
+
 ## 1. Google Sheets + Email Notification (5 minutes)
 
 ### Step 1: Create the Google Sheet
@@ -42,10 +57,12 @@ function doPost(e) {
     // Send email notification
     var subject = 'New Blueprint Inquiry: ' + (data.name || 'Unknown');
     var serviceNames = {
-      'clarity': 'Blueprint Clarity (€150)',
-      'build': 'Blueprint Build (€1,000)',
-      'launch': 'Blueprint Launch (€2,500)',
-      'custom': 'Blueprint Custom',
+      'brand': 'Brand Strategy & Identity',
+      'chief-of-staff': 'Fractional Chief of Staff',
+      'website': 'Website or e-commerce',
+      'materials': 'Branding materials',
+      'ai-workflow': 'Selected AI workflow',
+      'pay-what-you-want': 'Pay what feels right',
       'not-sure': 'Not sure yet'
     };
 
