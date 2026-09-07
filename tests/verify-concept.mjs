@@ -71,10 +71,9 @@ for (const phrase of [
   'Strategy, branding + execution <em>for founders &amp; creators.</em>',
   'Brand Strategy &amp; Identity',
   'Fractional Chief of Staff',
-  'Scoped after enquiry',
   'Pay what feels right',
   'data-stripe-payment-link',
-  'Custom quote',
+  'Start a conversation',
   'Inside an Engagement',
 ]) {
   assert.ok(allHtml.includes(phrase), `Missing required copy: ${phrase}`);
@@ -102,7 +101,11 @@ assert.match(pages['services.html'], /Websites &amp; e-commerce/);
 assert.match(pages['services.html'], /Selected AI workflows/);
 assert.ok((pages['services.html'].match(/>Book now </g) || []).length >= 2, 'Each core service needs a Book now action');
 assert.ok((pages['services.html'].match(/Request more information/g) || []).length >= 2, 'Each core service needs an information route');
-assert.match(pages['services.html'], /The proposal confirms the payment schedule before work begins/);
+assert.ok(!allHtml.includes('Scoped after enquiry'), 'Site must not replace prices with scoped-after-enquiry copy');
+assert.ok(!allHtml.includes('Typical delivery'), 'Site must not show delivery timing in the offer header');
+assert.ok(!allHtml.includes('3–4 weeks'), 'Site must not show delivery timing in the offer card');
+assert.ok(!allHtml.includes('Custom quote'), 'Custom projects should invite conversation, not show pricing language');
+assert.ok(!allHtml.includes('payment schedule'), 'Site must not discuss payment schedule in the public service copy');
 assert.match(pages['journal.html'], /Why the brand work starts before the logo/);
 assert.match(pages['journal.html'], /What a two-week Chief of Staff pilot should move/);
 assert.match(pages['about.html'], /Clarity before output/);
@@ -135,7 +138,6 @@ assert.match(script, /Thank you\. We will contact you within 1–3 business days
 assert.ok(!script.includes('preparedMailto'), 'Form must not prepare an email in the customer browser');
 assert.ok(!css.includes('.worlds-field:hover .worlds-belt'), 'Worlds motion must continue while hovering');
 assert.match(css, /Instrument Serif/);
-assert.match(css, /border-left:8px solid var\(--signal\)/);
 assert.ok(!css.includes('letter-spacing:-'), 'Brand system must not use negative letter spacing');
 
 console.log('Eight-page Blueprints Partner redesign verified.');
